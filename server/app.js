@@ -1,9 +1,9 @@
-var express = require('express')
-var app = express()
+const express = require('express')
+const app = express()
 const PORT = 3000
 
 //session
-var session = require('express-session')
+const session = require('express-session')
 app.use(session({
     secret: 'super-secret-key',
     resave: false,
@@ -11,7 +11,7 @@ app.use(session({
 }))
 
 //body-parser
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 
 // database
