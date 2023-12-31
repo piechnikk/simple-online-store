@@ -53,6 +53,19 @@ async function getUserRole(uid) {
 
 // endpoints
 
+// put product to database
+app.put('/product', isLoggedIn, isAdmin, async (req, res) => {
+    if (!req.body.productName || !req.body.price || !req.body.quantityInStock || !req.body.description || !req.body.imageUrl) return res.status(400).json({ message: 'Bad Request' })
+
+    try {
+        await pool.execute('INSERT INTO Products (ProductName, Price, QuantityInStock, Description, ImageURL) VALUES (?, ?, ?, ?, ?)', [req.body.productName, req.body.price, req.body.quantityInStock, req.body.description, req.body.imageUrl])
+        res.status(201).json({ message: 'Product successfully added' })
+    } catch (error) {
+        console.error(error)
+        res.status(500).json({ message: 'Internal Server Error' })
+    }
+})
+
 // display products
 app.get('/products', async (req, res) => {
     const { perPage = 30, page = 1, sort = 'asc', sortBy: rawSortBy } = req.query
@@ -117,14 +130,14 @@ app.post('/login', async (req, res) => {
 })
 
 //clear session
-app.post('/logout', authenticate, (req, res) => {
+app.post('/logout', isLoggedIn, (req, res) => {
     req.session.uid = null
     req.session.role = null
     res.status(200).json({ message: 'Logged out successfully' })
 })
 
 //order
-app.post('/order', authenticate, async (req, res) => {
+app.post('/order', isLoggedIn, async (req, res) => {
     if (!req.body.products || !Array.isArray(req.body.products) || !req.body.products > 0) return res.status(400).json({ message: 'Bad Request' })
 
     try {
