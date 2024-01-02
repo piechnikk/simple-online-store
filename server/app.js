@@ -2,6 +2,10 @@ const express = require('express')
 const app = express()
 const PORT = 3000
 
+//cors
+const cors = require('cors')
+app.use(cors())
+
 //session
 const session = require('express-session')
 app.use(session({
@@ -79,7 +83,8 @@ app.get('/products', async (req, res) => {
 
     try {
         const [rows] = await pool.execute(query)
-        res.status(200).json(rows)
+        const [[result]] = await pool.execute('SELECT COUNT(*) AS count FROM Products')
+        res.status(200).json({ items: rows, totalCount: result.count })
     } catch (error) {
         console.error(error)
         res.status(500).json({ message: 'Internal Server Error' })
