@@ -1,12 +1,10 @@
-export const fetchProductById = (id) => {
-  return {
-    ProductID: 1,
-    ProductName: "Mens Casual Premium Slim Fit T-Shirts",
-    Price: 22.3,
-    QuantityInStock: 1,
-    Description:
-      "Slim-fitting style, contrast raglan long sleeve, three-button henley placket, light weight & soft fabric for breathable and comfortable wearing. And Solid stitched shirts with round neck made for durability and a great fit for casual fashion wear and diehard baseball fans. The Henley style round neckline includes a three-button placket.",
-    ImageURL:
-      "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
-  };
+import { API_BASE_PRODUCTS } from "@/helpers/constants";
+
+export const fetchProductById = async (id) => {
+  const response = await fetch(API_BASE_PRODUCTS);
+  if (!response.ok) throw new Error(response.statusText);
+
+  const result = await response.json();
+
+  return result.items.find(({ ProductID }) => ProductID === parseInt(id));
 };

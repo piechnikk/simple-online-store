@@ -2,7 +2,7 @@ import { useLoaderData } from "react-router-dom";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { Breadcrumbs } from "@/components";
 import { ROUTES } from "@/helpers";
-import { useAddToCart } from "@/features/cart";
+import { useCart } from "@/features/cart";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -60,10 +60,11 @@ const product = {
 const reviews = { href: "#", average: 4, totalCount: 117 };
 
 const ProductRoute = () => {
-  const { ProductID, ProductName, Price, ImageURL, Description } =
-    useLoaderData();
+  const productData = useLoaderData();
 
-  const { isLoading, addToCart } = useAddToCart();
+  const { ProductID, ProductName, Price, ImageURL, Description } = productData;
+
+  const { addToCart } = useCart();
 
   return (
     <div className="mx-auto max-w-2xl px-4 pt-4 sm:px-6 sm:pt-6 lg:max-w-7xl">
@@ -99,7 +100,7 @@ const ProductRoute = () => {
         </div>
         <div className="aspect-h-5 aspect-w-4 lg:aspect-h-4 lg:aspect-w-3 sm:overflow-hidden sm:rounded-lg">
           <img
-            src={product.images[3].src}
+            src={ImageURL}
             alt={ProductName}
             className="h-full w-full object-cover object-center"
           />
@@ -150,15 +151,14 @@ const ProductRoute = () => {
             className="mt-10"
             onSubmit={(event) => {
               event.preventDefault();
-              addToCart();
+              addToCart(productData);
             }}
           >
             <button
-              disabled={isLoading}
               type="submit"
               className="mt-10 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-80"
             >
-              {isLoading ? "Dodawanie..." : "Dodaj do koszyka"}
+              Dodaj do koszyka
             </button>
           </form>
         </div>

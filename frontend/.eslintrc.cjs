@@ -18,4 +18,5 @@ module.exports = {
     ],
     "react/prop-types": "off",
   },
+  exclude: ["./tailwind.config.js"],
 };

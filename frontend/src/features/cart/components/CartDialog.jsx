@@ -1,11 +1,13 @@
 import { Fragment } from "react";
-import { useRouteLoaderData } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/20/solid";
 import { CartItem } from "@/features/cart/components";
+import { useCart } from "@/features/cart/hooks";
+import { ROUTES } from "@/helpers";
 
 const CartDialog = ({ isOpened = false, onOpenChange }) => {
-  const { cart } = useRouteLoaderData("global");
+  const { items, total, isEmpty } = useCart();
 
   return (
     <Transition.Root show={isOpened} as={Fragment}>
@@ -55,34 +57,45 @@ const CartDialog = ({ isOpened = false, onOpenChange }) => {
                       </div>
 
                       <div className="mt-8">
-                        <div className="flow-root">
-                          <ul
-                            role="list"
-                            className="-my-6 divide-y divide-gray-200"
-                          >
-                            {cart.map((product) => (
-                              <CartItem key={product.ProductID} {...product} />
-                            ))}
-                          </ul>
-                        </div>
+                        {isEmpty ? (
+                          <p className="py-4 text-center">Koszyk jest pusty.</p>
+                        ) : (
+                          <div className="flow-root">
+                            <ul
+                              role="list"
+                              className="-my-6 divide-y divide-gray-200"
+                            >
+                              {items.map((product) => (
+                                <CartItem
+                                  key={product.ProductID}
+                                  {...product}
+                                />
+                              ))}
+                            </ul>
+                          </div>
+                        )}
                       </div>
                     </div>
 
                     <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-                      <div className="flex justify-between text-base font-medium text-gray-900">
-                        <p>Suma częściowa</p>
-                        <p>262.00 zł</p>
-                      </div>
-                      <p className="mt-0.5 text-sm text-gray-500">
-                        Wysyłka i podatki obliczane przy kasie.
-                      </p>
-                      <div className="mt-6">
-                        <a
-                          href="#"
+                      {!isEmpty && (
+                        <>
+                          <div className="flex justify-between text-base font-medium text-gray-900">
+                            <p>Suma częściowa</p>
+                            <p>{total} zł</p>
+                          </div>
+                          <p className="mt-0.5 mb-6 text-sm text-gray-500">
+                            Wysyłka i podatki obliczane przy kasie.
+                          </p>
+                        </>
+                      )}
+                      <div>
+                        <Link
+                          to={ROUTES.checkout}
                           className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                         >
                           Zamówienie
-                        </a>
+                        </Link>
                       </div>
                       <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                         <p>

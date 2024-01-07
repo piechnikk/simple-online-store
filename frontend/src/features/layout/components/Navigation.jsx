@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { Link, useLocation, useRouteLoaderData } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -7,18 +7,23 @@ import {
   ShoppingBagIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { CartDialog } from "@/features/cart";
+import { CartDialog, useCart } from "@/features/cart";
+import { useAuth } from "@/features/auth";
 import { ROUTES } from "@/helpers";
 
 const Navigation = () => {
-  const { cart } = useRouteLoaderData("global");
+  const { count } = useCart();
+  const { user, logout } = useAuth();
 
   const [open, setOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
 
   const { key } = useLocation();
 
-  useEffect(() => setCartOpen(false), [key]);
+  useEffect(() => {
+    setCartOpen(false);
+    setOpen(false);
+  }, [key]);
 
   return (
     <div className="bg-white">
@@ -62,6 +67,14 @@ const Navigation = () => {
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
                   <div className="flow-root">
                     <Link
+                      to={ROUTES.home}
+                      className="-m-2 block p-2 font-medium text-gray-900"
+                    >
+                      Strona główna
+                    </Link>
+                  </div>
+                  <div className="flow-root">
+                    <Link
                       to={ROUTES.shop}
                       className="-m-2 block p-2 font-medium text-gray-900"
                     >
@@ -71,22 +84,35 @@ const Navigation = () => {
                 </div>
 
                 <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                  <div className="flow-root">
-                    <a
-                      href="#"
-                      className="-m-2 block p-2 font-medium text-gray-900"
-                    >
-                      Zaloguj się
-                    </a>
-                  </div>
-                  <div className="flow-root">
-                    <a
-                      href="#"
-                      className="-m-2 block p-2 font-medium text-gray-900"
-                    >
-                      Utwórz konto
-                    </a>
-                  </div>
+                  {user ? (
+                    <div className="flow-root">
+                      <button
+                        className="-m-2 block p-2 font-medium text-gray-900"
+                        onClick={logout}
+                      >
+                        Wyloguj się
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flow-root">
+                        <Link
+                          to={ROUTES.signIn}
+                          className="-m-2 block p-2 font-medium text-gray-900"
+                        >
+                          Zaloguj się
+                        </Link>
+                      </div>
+                      <div className="flow-root">
+                        <Link
+                          to={ROUTES.register}
+                          className="-m-2 block p-2 font-medium text-gray-900"
+                        >
+                          Utwórz konto
+                        </Link>
+                      </div>
+                    </>
+                  )}
                 </div>
               </Dialog.Panel>
             </Transition.Child>
@@ -125,6 +151,12 @@ const Navigation = () => {
               <div className="hidden lg:ml-8 lg:block lg:self-stretch">
                 <div className="flex h-full space-x-8">
                   <Link
+                    to={ROUTES.home}
+                    className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                  >
+                    Strona główna
+                  </Link>
+                  <Link
                     to={ROUTES.shop}
                     className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
                   >
@@ -135,19 +167,33 @@ const Navigation = () => {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Zaloguj się
-                  </a>
-                  <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                  <a
-                    href="#"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Utwórz konto
-                  </a>
+                  {user ? (
+                    <button
+                      onClick={logout}
+                      className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                    >
+                      Wyloguj się
+                    </button>
+                  ) : (
+                    <>
+                      <Link
+                        to={ROUTES.signIn}
+                        className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                      >
+                        Zaloguj się
+                      </Link>
+                      <span
+                        className="h-6 w-px bg-gray-200"
+                        aria-hidden="true"
+                      />
+                      <Link
+                        to={ROUTES.register}
+                        className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                      >
+                        Utwórz konto
+                      </Link>
+                    </>
+                  )}
                 </div>
 
                 <div className="flex lg:ml-6">
@@ -170,9 +216,11 @@ const Navigation = () => {
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"
                     />
-                    <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      {cart.length}
-                    </span>
+                    {count !== 0 && (
+                      <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                        {count}
+                      </span>
+                    )}
                     <span className="sr-only">items in cart, view bag</span>
                   </button>
                   <CartDialog isOpened={cartOpen} onOpenChange={setCartOpen} />

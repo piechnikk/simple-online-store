@@ -45,7 +45,8 @@ const Pagination = ({ totalResults = 0, totalPages = 1 }) => {
           <div>
             <p className="text-sm text-gray-700">
               Pokazano od{" "}
-              <span className="font-medium">{(currentPage - 1) * 10}</span> do{" "}
+              <span className="font-medium">{(currentPage - 1) * 10 + 1}</span>{" "}
+              do{" "}
               <span className="font-medium">
                 {Math.min(currentPage * 10, totalResults)}
               </span>{" "}

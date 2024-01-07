@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
-import { useRemoveFromCart } from "@/features/cart/api";
+import { useCart } from "@/features/cart";
 import { ROUTES } from "@/helpers";
 
-const CartItem = ({ ProductID, Price, ProductName, ImageURL }) => {
-  const { isLoading, removeFromCart } = useRemoveFromCart();
+const CartItem = ({
+  ProductID,
+  Price,
+  ProductName,
+  ImageURL,
+  Quantity = 1,
+}) => {
+  const { removeFromCart } = useCart();
 
   return (
     <li className="flex py-6">
@@ -24,14 +30,13 @@ const CartItem = ({ ProductID, Price, ProductName, ImageURL }) => {
         </div>
         <p className="mt-1 text-sm text-gray-500">Black</p>
         <div className="flex flex-1 items-end justify-between text-sm">
-          <p className="text-gray-500">Ilość 1</p>
+          <p className="text-gray-500">Ilość: {Quantity}</p>
 
           <div className="flex">
             <button
-              disabled={isLoading}
               type="button"
               className="font-medium text-indigo-600 hover:text-indigo-500 disabled:opacity-80"
-              onClick={removeFromCart}
+              onClick={() => removeFromCart({ ProductID })}
             >
               Usuń
             </button>

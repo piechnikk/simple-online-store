@@ -1,6 +1,7 @@
 import {
   RouterProvider as ReactRouterProvider,
   createBrowserRouter,
+  redirect,
 } from "react-router-dom";
 import {
   ShopRoute,
@@ -8,14 +9,13 @@ import {
   fetchProducts,
   fetchProductById,
 } from "@/features/shop";
-import { fetchCart } from "@/features/cart";
+import { SignInRoute, RegisterRoute } from "@/features/auth";
 import { DefaultLayout, NotFoundLayout } from "@/features/layout";
+import { createOrder, CheckoutRoute } from "@/features/checkout";
 import { ROUTES } from "@/helpers";
 
 const router = createBrowserRouter([
   {
-    id: "global",
-    loader: () => fetchCart(),
     element: <DefaultLayout />,
     children: [
       {
@@ -30,10 +30,29 @@ const router = createBrowserRouter([
         element: <ProductRoute />,
       },
       {
+        path: ROUTES.checkout,
+        action: async ({ request }) => {
+          const formData = await request.formData();
+          const body = JSON.parse(Object.fromEntries(formData).data);
+          await createOrder(body);
+
+          return redirect(ROUTES.home);
+        },
+        element: <CheckoutRoute />,
+      },
+      {
         path: "*",
         element: <NotFoundLayout />,
       },
     ],
+  },
+  {
+    path: ROUTES.register,
+    element: <RegisterRoute />,
+  },
+  {
+    path: ROUTES.signIn,
+    element: <SignInRoute />,
   },
 ]);
 
