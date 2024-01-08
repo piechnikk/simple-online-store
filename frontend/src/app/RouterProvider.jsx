@@ -9,6 +9,7 @@ import {
   fetchProducts,
   fetchProductById,
 } from "@/features/shop";
+import { HomeRoute } from "@/features/home";
 import { SignInRoute, RegisterRoute } from "@/features/auth";
 import { DefaultLayout, NotFoundLayout } from "@/features/layout";
 import { createOrder, CheckoutRoute } from "@/features/checkout";
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
   {
     element: <DefaultLayout />,
     children: [
+      {
+        path: ROUTES.home,
+        element: <HomeRoute />,
+      },
       {
         path: ROUTES.shop,
         loader: ({ request }) =>

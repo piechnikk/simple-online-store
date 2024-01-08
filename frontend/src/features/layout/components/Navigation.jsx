@@ -26,7 +26,7 @@ const Navigation = () => {
   }, [key]);
 
   return (
-    <div className="bg-white">
+    <nav className="relative bg-white z-50">
       <Transition.Root show={open} as={Fragment}>
         <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
           <Transition.Child
@@ -230,7 +230,7 @@ const Navigation = () => {
           </div>
         </nav>
       </header>
-    </div>
+    </nav>
   );
 };
 
