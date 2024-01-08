@@ -3,10 +3,13 @@ import { Link, useNavigate, Navigate } from "react-router-dom";
 import { FormField, Input } from "@/components";
 import { useAuth } from "@/features/auth/hooks";
 import { ROUTES } from "@/helpers";
+import { usePage } from "@/hooks";
 
 const RegisterRoute = () => {
   const { user, register } = useAuth();
   const navigate = useNavigate();
+
+  usePage({ title: `Zarejestruj się | Dodaj konto` });
 
   const handleSubmit = useCallback(
     async (event) => {
@@ -28,11 +31,13 @@ const RegisterRoute = () => {
   ) : (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-        <img
-          className="mx-auto h-10 w-auto"
-          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-          alt="Your Company"
-        />
+        <Link to={ROUTES.home}>
+          <img
+            className="mx-auto h-10 w-auto"
+            src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+            alt="Your Company"
+          />
+        </Link>
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Zarejestruj nowe konto
         </h2>

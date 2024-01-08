@@ -1,8 +1,9 @@
 import { useLoaderData } from "react-router-dom";
 import { StarIcon } from "@heroicons/react/20/solid";
 import { Breadcrumbs } from "@/components";
-import { ROUTES } from "@/helpers";
 import { useCart } from "@/features/cart";
+import { ROUTES } from "@/helpers";
+import { usePage } from "@/hooks";
 
 const product = {
   name: "Basic Tee 6-Pack",
@@ -65,6 +66,8 @@ const ProductRoute = () => {
   const { ProductID, ProductName, Price, ImageURL, Description } = productData;
 
   const { addToCart } = useCart();
+
+  usePage({ title: `Produkt | ${ProductName}` });
 
   return (
     <div className="mx-auto max-w-2xl px-4 pt-4 sm:px-6 sm:pt-6 lg:max-w-7xl">

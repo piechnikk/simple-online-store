@@ -1,11 +1,18 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useSearchParams } from "react-router-dom";
 import { Breadcrumbs } from "@/components";
 import { ProductCard, Pagination } from "@/features/shop/components";
 import { NotFound } from "@/features/placeholders";
 import { ROUTES } from "@/helpers";
+import { usePage } from "@/hooks";
 
 export default function ShopRoute() {
   const { items, totalCount } = useLoaderData();
+  const [searchParams] = useSearchParams();
+
+  const pageFromParams = parseInt(searchParams.get("page"));
+  const page = isNaN(pageFromParams) ? 1 : pageFromParams;
+
+  usePage({ title: `Sklep | Strona ${page}` });
 
   return (
     <div className="mx-auto w-full max-w-2xl px-4 pt-4 sm:px-6 sm:pt-6 lg:max-w-7xl">
@@ -28,6 +35,7 @@ export default function ShopRoute() {
             ))}
           </div>
           <Pagination
+            page={page}
             results={items.length}
             totalResults={totalCount}
             totalPages={Math.ceil(totalCount / 10)}

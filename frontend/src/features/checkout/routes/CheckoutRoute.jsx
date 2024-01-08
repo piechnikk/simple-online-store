@@ -4,11 +4,14 @@ import { useCart } from "@/features/cart";
 import { NotFound } from "@/features/placeholders";
 import { ROUTES } from "@/helpers";
 import { useCallback } from "react";
+import { usePage } from "@/hooks";
 
 const CheckoutRoute = () => {
   const { items, isEmpty, total } = useCart();
   const navigation = useNavigation();
   const submit = useSubmit();
+
+  usePage({ title: `Zamówienie | Podsumowanie` });
 
   const handleSubmit = useCallback(
     (event) => {
