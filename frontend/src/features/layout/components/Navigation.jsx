@@ -26,9 +26,9 @@ const Navigation = () => {
   }, [key]);
 
   return (
-    <nav className="relative bg-white z-50">
+    <nav className="top-0 sticky bg-white z-20">
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-40 lg:hidden" onClose={setOpen}>
+        <Dialog as="div" className="relative z-30 lg:hidden" onClose={setOpen}>
           <Transition.Child
             as={Fragment}
             enter="transition-opacity ease-linear duration-300"

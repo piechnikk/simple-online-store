@@ -11,7 +11,7 @@ const QuickView = ({ data, isOpened = false, onOpenChange }) => {
 
   return (
     <Transition.Root show={isOpened} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onOpenChange}>
+      <Dialog as="div" className="relative z-30" onClose={onOpenChange}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -24,7 +24,7 @@ const QuickView = ({ data, isOpened = false, onOpenChange }) => {
           <div className="fixed inset-0 hidden bg-gray-500 bg-opacity-75 transition-opacity md:block" />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="fixed inset-0 w-screen overflow-y-auto">
           <div className="flex min-h-full items-stretch justify-center text-center md:items-center md:px-2 lg:px-4">
             <Transition.Child
               as={Fragment}

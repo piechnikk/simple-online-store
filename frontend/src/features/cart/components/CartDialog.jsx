@@ -11,7 +11,7 @@ const CartDialog = ({ isOpened = false, onOpenChange }) => {
 
   return (
     <Transition.Root show={isOpened} as={Fragment}>
-      <Dialog as="div" className="relative z-10" onClose={onOpenChange}>
+      <Dialog as="div" className="relative z-30" onClose={onOpenChange}>
         <Transition.Child
           as={Fragment}
           enter="ease-in-out duration-500"

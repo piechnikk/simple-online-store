@@ -6,6 +6,7 @@ export const signIn = async (body) => {
       method: "POST",
       body: JSON.stringify(body),
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
     });
     if (!response.ok) throw new Error(response.statusText);
 
