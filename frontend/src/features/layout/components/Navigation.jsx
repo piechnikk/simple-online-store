@@ -162,6 +162,14 @@ const Navigation = () => {
                   >
                     Sklep
                   </Link>
+                  {user?.role === "admin" && (
+                    <Link
+                      to={ROUTES.dashboard}
+                      className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                    >
+                      Panel
+                    </Link>
+                  )}
                 </div>
               </div>
 

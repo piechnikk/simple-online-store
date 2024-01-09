@@ -10,7 +10,7 @@ import {
   fetchProductById,
 } from "@/features/shop";
 import { HomeRoute } from "@/features/home";
-import { SignInRoute, RegisterRoute } from "@/features/auth";
+import { SignInRoute, RegisterRoute, DashboardRoute } from "@/features/auth";
 import { DefaultLayout, NotFoundLayout } from "@/features/layout";
 import { createOrder, CheckoutRoute } from "@/features/checkout";
 import { ROUTES } from "@/helpers";
@@ -44,6 +44,11 @@ const router = createBrowserRouter([
           return redirect(ROUTES.home);
         },
         element: <CheckoutRoute />,
+      },
+      {
+        path: ROUTES.dashboard,
+        // loader: ({ params }) => fetchProductById(params.id),
+        element: <DashboardRoute />,
       },
       {
         path: "*",
