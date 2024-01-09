@@ -15,6 +15,7 @@ const DashboardRoute = () => {
         method: "PUT",
         body: JSON.stringify(formField),
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
       });
     } catch (error) {
       console.log(error);
